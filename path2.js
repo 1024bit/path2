@@ -1,5 +1,5 @@
 /**
- *  An implementing of Node.js Path: http://www.nodejs.org/api/path.html
+ *  An implementing of Node.js Path at http://www.nodejs.org/api/path.html
  *  Only support Unix-Style path, begining of slashes like this: /c/html/www
  */
 (function(global, factory) {
@@ -16,7 +16,7 @@
     RE_MULTI_SLASHES = /\/\/+/g,
     RE_UP_DIR = /\/[^/]+\/\.{2}/,
     RE_ROOT_DIR = /^\/\.\.?\/?/, // /../, /.., /., /./
-    RE_CURR_DIR = /\/\./g,
+    RE_SELF_DIR = /\/\./g,
 
     RE_TAIL_SLASHES = /\/$/,
     RE_HEAD_TAIL_SLASHES = /^\/|\/$/,
@@ -36,7 +36,7 @@
             }
             return p.replace(RE_MULTI_SLASHES, '/')
                     .replace(RE_ROOT_DIR, '/')
-                    .replace(RE_CURR_DIR, '');
+                    .replace(RE_SELF_DIR, '');
         },
         //
         join: function() {
@@ -56,8 +56,7 @@
             if (!to.indexOf('/')) {
                 p = to;
             } else {
-                while (from) {
-                    prev = from.pop();
+                while ((prev = from.pop())) {
                     p = prev + '/' + to;
                     if (!prev.indexOf('/')) break;
                 }
