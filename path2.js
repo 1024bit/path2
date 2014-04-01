@@ -3,7 +3,6 @@
  *  Only support Unix-Style path, begining of slashes like this: /c/html/www
  */
 (function(global, factory) {
-    'use strict';
     // Node.js, CommonJS, CommonJS Like
     if (typeof module === 'object' && typeof module.exports === 'object') {
         module.exports = factory(global, true);
@@ -101,7 +100,7 @@
         }
     };
 
-    if (noGlobal) {
+    if (!noGlobal) {
         global.path2 = path2;
     }
 
@@ -109,16 +108,8 @@
     if (define && (define.cmd || define.amd)) {
         return define('path2', [], factory);
     }
-    // Global require, may be Node.js
-    if (typeof require === 'function') {
-        return factory(require);
-    }
-    // Non-Module-System
-    return factory(function(id) {
-        for (var key in global)
-            if (key.toLowerCase() === id.toLowerCase())
-                return global[key];
-    });
+    // Common
+    return factory(require);
 
     function factory(require, exports) {
         var path = require('path'), key;
